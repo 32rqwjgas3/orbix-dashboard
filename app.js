@@ -7,9 +7,10 @@ const app = express();
 // Load environment variables
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
+// Hardcoded to avoid newline issues
 const REDIRECT_URI = "https://orbix-dashboard.onrender.com/callback";
 
-// Debug logs to confirm environment variables
+// Debug logs
 console.log("CLIENT_ID:", CLIENT_ID);
 console.log("REDIRECT_URI:", REDIRECT_URI);
 
@@ -29,7 +30,6 @@ app.get('/login', (req, res) => {
   console.log("Generated OAuth2 URL:", authorizeUrl);
   res.redirect(authorizeUrl);
 });
-
 
 // OAuth2 callback route
 app.get('/callback', async (req, res) => {
@@ -68,43 +68,6 @@ app.get('/callback', async (req, res) => {
   } catch (err) {
     console.error("OAuth2 Error:", err.response?.data || err.message);
     res.send(`<pre>Authentication failed.\n\n${JSON.stringify(err.response?.data || err.message, null, 2)}</pre>`);
-  }
-});
-
-  try {
-    // Exchange code for access token
-    const tokenResponse = await axios.post(
-      'https://discord.com/api/oauth2/token',
-      new URLSearchParams({
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: REDIRECT_URI,
-        scope: 'identify',
-      }),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      }
-    );
-
-    // Use access token to get user info
-    const userResponse = await axios.get('https://discord.com/api/users/@me', {
-      headers: {
-        Authorization: `Bearer ${tokenResponse.data.access_token}`,
-      },
-    });
-
-    const user = userResponse.data;
-    res.send(`
-      <h1>Welcome, ${user.username}#${user.discriminator}</h1>
-      <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" width="100" />
-    `);
-  } catch (err) {
-    console.error("OAuth2 Error:", err.response?.data || err.message);
-    res.send('Authentication failed.');
   }
 });
 
