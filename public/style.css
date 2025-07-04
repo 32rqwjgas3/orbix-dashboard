@@ -29,14 +29,14 @@ header {
 }
 
 .logo-icon {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
 }
 
-.logo-text {
+.logo-text-horizontal {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 12px;
 }
 
 .logo {
@@ -49,6 +49,15 @@ header {
   font-size: 1rem;
   color: #aaa;
   font-weight: 400;
+  white-space: nowrap;
+}
+
+.highlight {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #58a6ff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 nav a {
@@ -140,6 +149,7 @@ footer {
   color: #888;
   text-decoration: none;
 }
+
 
 
 
