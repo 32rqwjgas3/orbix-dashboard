@@ -1,24 +1,33 @@
 ﻿require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
+const path = require('path');
 const app = express();
 
+// Set up EJS for templating
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.set('views', path.join(__dirname, 'views'));
 
+// Serve static files (like CSS) from the public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Load environment variables
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
+// Home page
 app.get('/', (req, res) => {
   res.render('index');
 });
 
+// Discord login route
 app.get('/login', (req, res) => {
   const authorizeUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`;
   res.redirect(authorizeUrl);
 });
 
+// OAuth2 callback route
 app.get('/callback', async (req, res) => {
   const code = req.query.code;
   if (!code) return res.send('No code provided');
@@ -54,6 +63,10 @@ app.get('/callback', async (req, res) => {
   }
 });
 
+// Start the server
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+app.listen(port, () => {
+  console.log(`Orbix Dashboard running at http://localhost:${port}`);
+});
+
 
