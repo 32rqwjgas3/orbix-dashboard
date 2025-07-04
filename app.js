@@ -9,10 +9,6 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
-// Debug log to verify .env values
-console.log("CLIENT_ID:", CLIENT_ID);
-console.log("REDIRECT_URI:", REDIRECT_URI);
-
 // Set up EJS and static files
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -26,11 +22,10 @@ app.get('/', (req, res) => {
 // Login route
 app.get('/login', (req, res) => {
   const authorizeUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`;
-  console.log("Generated OAuth2 URL:", authorizeUrl);
   res.redirect(authorizeUrl);
 });
 
-// OAuth2 callback route
+// OAuth2 callback
 app.get('/callback', async (req, res) => {
   const code = req.query.code;
   if (!code) return res.send('No code provided');
@@ -62,15 +57,15 @@ app.get('/callback', async (req, res) => {
     const user = userResponse.data;
     res.send(`
       <h1>Welcome, ${user.username}#${user.discriminator}</h1>
-      <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" width="100" />
+      <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" width="100" />
     `);
   } catch (err) {
-    console.error("OAuth2 Error:", err.response?.data || err.message);
-    res.send('Error during authentication');
+    console.error(err.response?.data || err.message);
+    res.send('Authentication failed.');
   }
 });
 
-// Docs route (optional)
+// Docs placeholder
 app.get('/docs', (req, res) => {
   res.send('<h1>Orbix Documentation Coming Soon</h1>');
 });
@@ -80,5 +75,6 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Orbix Dashboard running at http://localhost:${port}`);
 });
+
 
 
