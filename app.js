@@ -9,6 +9,10 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
+// Debug logs to confirm environment variables
+console.log("CLIENT_ID:", CLIENT_ID);
+console.log("REDIRECT_URI:", REDIRECT_URI);
+
 // Set up EJS and static files
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -22,15 +26,17 @@ app.get('/', (req, res) => {
 // Login route
 app.get('/login', (req, res) => {
   const authorizeUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`;
+  console.log("Generated OAuth2 URL:", authorizeUrl);
   res.redirect(authorizeUrl);
 });
 
-// OAuth2 callback
+// OAuth2 callback route
 app.get('/callback', async (req, res) => {
   const code = req.query.code;
   if (!code) return res.send('No code provided');
 
   try {
+    // Exchange code for access token
     const tokenResponse = await axios.post(
       'https://discord.com/api/oauth2/token',
       new URLSearchParams({
@@ -48,6 +54,7 @@ app.get('/callback', async (req, res) => {
       }
     );
 
+    // Use access token to get user info
     const userResponse = await axios.get('https://discord.com/api/users/@me', {
       headers: {
         Authorization: `Bearer ${tokenResponse.data.access_token}`,
@@ -60,7 +67,7 @@ app.get('/callback', async (req, res) => {
       <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" width="100" />
     `);
   } catch (err) {
-    console.error(err.response?.data || err.message);
+    console.error("OAuth2 Error:", err.response?.data || err.message);
     res.send('Authentication failed.');
   }
 });
@@ -75,6 +82,7 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Orbix Dashboard running at http://localhost:${port}`);
 });
+
 
 
 
