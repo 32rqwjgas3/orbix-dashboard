@@ -4,31 +4,31 @@ const axios = require('axios');
 const path = require('path');
 const app = express();
 
-// Set up EJS for templating
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-// Serve static files (like CSS) from the public folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Load environment variables
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
+
+// Debug log to verify .env values
+console.log("CLIENT_ID:", CLIENT_ID);
+console.log("REDIRECT_URI:", REDIRECT_URI);
+
+// Set up EJS and static files
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Home page
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-// Discord login route
+// Login route
 app.get('/login', (req, res) => {
   const authorizeUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`;
-  
-  console.log("Generated OAuth2 URL:", authorizeUrl); // 👈 Add this line
+  console.log("Generated OAuth2 URL:", authorizeUrl);
   res.redirect(authorizeUrl);
 });
-
 
 // OAuth2 callback route
 app.get('/callback', async (req, res) => {
@@ -59,14 +59,23 @@ app.get('/callback', async (req, res) => {
       },
     });
 
-    res.send(`<h1>Welcome, ${userResponse.data.username}#${userResponse.data.discriminator}</h1>`);
+    const user = userResponse.data;
+    res.send(`
+      <h1>Welcome, ${user.username}#${user.discriminator}</h1>
+      <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" width="100" />
+    `);
   } catch (err) {
-    console.error(err);
+    console.error("OAuth2 Error:", err.response?.data || err.message);
     res.send('Error during authentication');
   }
 });
 
-// Start the server
+// Docs route (optional)
+app.get('/docs', (req, res) => {
+  res.send('<h1>Orbix Documentation Coming Soon</h1>');
+});
+
+// Start server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Orbix Dashboard running at http://localhost:${port}`);
