@@ -24,32 +24,61 @@
     </div>
   </header>
 
-  <section class="dashboard">
-    <div class="container">
-      <h1>Moderation Commands</h1>
-      <form id="command-form">
+  <section class="dashboard-grid">
+    <div class="sidebar">
+      <h2>Commands</h2>
+      <ul id="command-list">
         <% commands.forEach(cmd => { %>
-          <div class="toggle-row">
-            <label for="<%= cmd.name %>"><%= cmd.label %></label>
-            <input type="checkbox" id="<%= cmd.name %>" name="<%= cmd.name %>" <%= cmd.enabled ? 'checked' : '' %> />
-          </div>
+          <li data-command="<%= cmd.name %>"><%= cmd.label %></li>
         <% }) %>
-        <button type="submit" class="cta-button">Save Settings</button>
-      </form>
+      </ul>
+    </div>
+
+    <div class="command-settings" id="settings-panel">
+      <h2>Select a command</h2>
+      <p>Choose a command from the left to configure its settings.</p>
     </div>
   </section>
 
   <script>
-    document.getElementById('command-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      const settings = {};
-      for (const [key, value] of formData.entries()) {
-        settings[key] = true;
-      }
-      console.log("Saved settings:", settings);
-      alert("Settings saved (simulated)!");
+    const commands = <%- JSON.stringify(commands) %>;
+    const roles = <%- JSON.stringify(roles) %>;
+
+    const listItems = document.querySelectorAll('#command-list li');
+    const panel = document.getElementById('settings-panel');
+
+    listItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const cmdName = item.dataset.command;
+        const cmd = commands.find(c => c.name === cmdName);
+        const selectedRoles = cmd.roles || [];
+
+        panel.innerHTML = `
+          <h2>${cmd.label}</h2>
+          <label>
+            <input type="checkbox" id="toggle-${cmd.name}" ${cmd.enabled ? 'checked' : ''}>
+            Enable Command
+          </label>
+          <div class="role-select">
+            <label for="roles-${cmd.name}">Allowed Roles:</label>
+            <select id="roles-${cmd.name}" multiple>
+              ${roles.map(role => `
+                <option value="${role}" ${selectedRoles.includes(role) ? 'selected' : ''}>${role}</option>
+              `).join('')}
+            </select>
+          </div>
+          <button class="cta-button" onclick="saveSettings('${cmd.name}')">Save</button>
+        `;
+      });
     });
+
+    function saveSettings(cmdName) {
+      const enabled = document.getElementById(`toggle-${cmdName}`).checked;
+      const selectedRoles = Array.from(document.getElementById(`roles-${cmdName}`).selectedOptions).map(opt => opt.value);
+      alert(`Saved ${cmdName} settings:\nEnabled: ${enabled}\nRoles: ${selectedRoles.join(', ')}`);
+    }
   </script>
 </body>
 </html>
+
+

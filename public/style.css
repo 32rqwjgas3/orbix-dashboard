@@ -1,214 +1,65 @@
-﻿body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom right, #0d0d0d, #1a1a2e);
-  color: #f0f0f0;
+﻿.dashboard-grid {
+  display: flex;
+  min-height: 80vh;
 }
 
-.container {
-  max-width: 1300px;
-  margin: auto;
+.sidebar {
+  width: 250px;
+  background: #1e1e2f;
   padding: 20px;
+  border-right: 1px solid #333;
 }
 
-header {
-  background-color: #1a1a1a;
-  padding: 20px 0;
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-group-horizontal {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-icon {
-  width: 48px;
-  height: 48px;
-}
-
-.logo-text-horizontal {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
+.sidebar h2 {
   color: #fff;
-}
-
-.slogan {
-  font-size: 1rem;
-  color: #aaa;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.highlight {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #58a6ff;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-nav a {
-  margin-left: 20px;
-  text-decoration: none;
-  color: #ccc;
-  font-weight: 500;
-}
-
-.nav-button,
-.cta-button {
-  background: linear-gradient(135deg, #5865F2, #404EED);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.3s ease;
-  display: inline-block;
-  margin: 10px 0;
-}
-
-.nav-button.spaced {
-  margin-left: 30px;
-}
-
-.nav-button:hover,
-.cta-button:hover {
-  background: linear-gradient(135deg, #404EED, #5865F2);
-}
-
-.hero {
-  text-align: center;
-  padding: 100px 20px;
-  background: radial-gradient(circle at top, #2e2e4d, #0d0d0d);
-}
-
-.hero h1 {
-  font-size: 3rem;
   margin-bottom: 20px;
 }
 
-.hero p {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin-bottom: 30px;
+.sidebar ul {
+  list-style: none;
+  padding: 0;
 }
 
-.features {
-  background-color: #111;
-  padding: 80px 40px;
-}
-
-.features-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-}
-
-.feature {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 30px;
-  width: 100%;
-  max-width: 360px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-.feature h2 {
+.sidebar li {
+  padding: 10px;
   margin-bottom: 10px;
-  color: #fff;
-}
-
-.feature p {
+  background: #2c2c3e;
   color: #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-footer {
-  background-color: #1a1a1a;
-  padding: 20px 0;
-  text-align: center;
+.sidebar li:hover {
+  background: #40405a;
 }
 
-.footer-links a {
-  margin: 0 10px;
-  color: #888;
-  text-decoration: none;
-}
-
-.dashboard h1 {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.toggle-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.toggle-row label {
-  font-size: 1.1rem;
+.command-settings {
+  flex: 1;
+  padding: 40px;
+  background: #111;
   color: #f0f0f0;
 }
 
-.toggle-row input[type="checkbox"] {
-  transform: scale(1.4);
+.command-settings h2 {
+  margin-bottom: 20px;
 }
 
-.cta-button.dashboard {
-  background: linear-gradient(135deg, #00b894, #00cec9);
+.command-settings label {
+  display: block;
+  margin: 15px 0 5px;
 }
 
-.cta-button.dashboard:hover {
-  background: linear-gradient(135deg, #00cec9, #00b894);
+.role-select select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  background: #1a1a2e;
+  color: #fff;
+  border: 1px solid #333;
 }
 
-.dashboard h1 {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  text-align: center;
-}
 
-.toggle-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.toggle-row label {
-  font-size: 1.1rem;
-  color: #f0f0f0;
-}
-
-.toggle-row input[type="checkbox"] {
-  transform: scale(1.4);
-}
 
 
 
