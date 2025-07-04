@@ -27,6 +27,7 @@ app.get('/login', (req, res) => {
   res.redirect(authorizeUrl);
 });
 
+
 // OAuth2 callback route
 app.get('/callback', async (req, res) => {
   const code = req.query.code;
