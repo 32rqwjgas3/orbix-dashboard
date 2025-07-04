@@ -84,4 +84,17 @@ app.listen(port, () => {
 
 
 
+app.get('/dashboard', (req, res) => {
+  const commands = [
+    { name: 'ban', label: 'Ban Command', enabled: true },
+    { name: 'kick', label: 'Kick Command', enabled: true },
+    { name: 'warn', label: 'Warn Command', enabled: false },
+    { name: 'mute', label: 'Mute Command', enabled: true },
+    { name: 'purge', label: 'Purge Messages', enabled: false },
+  ];
+  res.render('dashboard', { commands });
+});
+
+
+
 

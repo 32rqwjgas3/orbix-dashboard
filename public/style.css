@@ -150,6 +150,33 @@ footer {
   text-decoration: none;
 }
 
+.dashboard h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggle-row label {
+  font-size: 1.1rem;
+  color: #f0f0f0;
+}
+
+.toggle-row input[type="checkbox"] {
+  transform: scale(1.4);
+}
+
+
 
 
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orbix Dashboard</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo-group-horizontal">
+        <img src="/logo.png" alt="Orbix Logo" class="logo-icon" />
+        <div class="logo-text-horizontal">
+          <div class="logo">Orbix</div>
+          <div class="slogan"><span class="highlight">Advanced</span> Moderation Systems</div>
+        </div>
+      </div>
+      <nav>
+        <a href="/" class="nav-link">Home</a>
+        <a href="/docs" class="nav-link">Docs</a>
+        <a href="/login" class="nav-link">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="dashboard">
+    <div class="container">
+      <h1>Moderation Commands</h1>
+      <form id="command-form">
+        <% commands.forEach(cmd => { %>
+          <div class="toggle-row">
+            <label for="<%= cmd.name %>"><%= cmd.label %></label>
+            <input type="checkbox" id="<%= cmd.name %>" name="<%= cmd.name %>" <%= cmd.enabled ? 'checked' : '' %> />
+          </div>
+        <% }) %>
+        <button type="submit" class="cta-button">Save Settings</button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('command-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const settings = {};
+      for (const [key, value] of formData.entries()) {
+        settings[key] = true;
+      }
+      console.log("Saved settings:", settings);
+      alert("Settings saved (simulated)!");
+    });
+  </script>
+</body>
+</html>
