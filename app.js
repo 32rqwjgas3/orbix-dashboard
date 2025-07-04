@@ -7,7 +7,7 @@ const app = express();
 // Load environment variables
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
+const REDIRECT_URI = "https://orbix-dashboard.onrender.com/callback";
 
 // Debug logs to confirm environment variables
 console.log("CLIENT_ID:", CLIENT_ID);
@@ -29,6 +29,7 @@ app.get('/login', (req, res) => {
   console.log("Generated OAuth2 URL:", authorizeUrl);
   res.redirect(authorizeUrl);
 });
+
 
 // OAuth2 callback route
 app.get('/callback', async (req, res) => {
