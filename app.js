@@ -71,48 +71,30 @@ app.get('/dashboard', async (req, res) => {
   if (!req.session.user || !req.session.token) return res.redirect('/login');
 
   try {
-    const guildsResponse = await axios.get('https://discord.com/api/users/@me/guilds', {
+    const userGuilds = await axios.get('https://discord.com/api/users/@me/guilds', {
       headers: { Authorization: `Bearer ${req.session.token}` }
     });
 
-    const adminGuilds = guildsResponse.data.filter(g => (g.permissions & 0x8) === 0x8);
-    if (adminGuilds.length === 0) return res.send('You must be an admin in at least one server.');
-
-    const selectedGuild = adminGuilds[0];
-
-    const rolesResponse = await axios.get(`https://discord.com/api/guilds/${selectedGuild.id}/roles`, {
+    const botGuilds = await axios.get('https://discord.com/api/users/@me/guilds', {
       headers: { Authorization: `Bot ${BOT_TOKEN}` }
     });
 
-    const roles = rolesResponse.data
-      .filter(role => role.name !== '@everyone')
-      .map(role => role.name);
+    const botGuildIds = botGuilds.data.map(g => g.id);
+    const adminGuilds = userGuilds.data.filter(g => (g.permissions & 0x8) === 0x8);
 
-    const commands = [
-      { name: 'ban', label: 'Ban Command', enabled: true },
-      { name: 'kick', label: 'Kick Command', enabled: true },
-      { name: 'warn', label: 'Warn Command', enabled: false },
-      { name: 'mute', label: 'Mute Command', enabled: true },
-      { name: 'purge', label: 'Purge Messages', enabled: false },
-    ];
+    const availableGuilds = adminGuilds.map(g => ({
+      id: g.id,
+      name: g.name,
+      icon: g.icon,
+      hasBot: botGuildIds.includes(g.id)
+    }));
 
-    res.render('dashboard', { commands, roles, guild: selectedGuild });
+    res.render('select-server', { guilds: availableGuilds, clientId: CLIENT_ID });
   } catch (err) {
     console.error(err);
-    res.send('Failed to load dashboard.');
+    res.send('Failed to load servers.');
   }
 });
-
-// Docs
-app.get('/docs', (req, res) => {
-  res.send('<h1>Orbix Docs Coming Soon</h1>');
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Orbix running on http://localhost:${port}`));
-
-
-
 
 
 

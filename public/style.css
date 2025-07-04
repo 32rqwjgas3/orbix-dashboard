@@ -59,6 +59,41 @@
   border: 1px solid #333;
 }
 
+.server-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.server-card {
+  background: #1e1e2f;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 200px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.server-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.server-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 80px;
+  margin: 0 auto 10px;
+}
+
 
 
 
